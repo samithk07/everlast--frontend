@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import {
   Search,
   Eye,
-
   Package,
   ShoppingBag,
   Users,
@@ -135,16 +134,11 @@ const OrdersPage = () => {
     }
   };
 
-
-
   const handleUpdateStatus = async (orderId, newStatus) => {
     try {
-      const response = await api.put(
-        `/admin/orders/${orderId}/status`,
-        {
-          orderStatus: newStatus,
-        }
-      );
+      const response = await api.put(`/admin/orders/${orderId}/status`, {
+        orderStatus: newStatus,
+      });
 
       toast.success(response.data.message);
 
@@ -158,10 +152,7 @@ const OrdersPage = () => {
       await fetchOrders();
     } catch (err) {
       console.error(err);
-
-      toast.error(
-        err.response?.data?.message || "Failed to update order"
-      );
+      toast.error(err.response?.data?.message || "Failed to update order");
     }
   };
 
@@ -174,93 +165,99 @@ const OrdersPage = () => {
   }
 
   return (
-    <div className="p-4 sm:p-6 max-w-[1600px] mx-auto">
+    <div className="p-3 sm:p-6 max-w-[1600px] mx-auto overflow-x-hidden">
       {/* ================= Header ================= */}
-      <div className="flex flex-col gap-1 mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+      <div className="flex flex-col gap-1 mb-5 sm:mb-8">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
           Orders
         </h1>
-        <p className="text-sm sm:text-base text-gray-500">
+        <p className="text-xs sm:text-sm lg:text-base text-gray-500">
           Manage all customer orders
         </p>
       </div>
 
       {error && (
-        <div className="mb-6 rounded-lg bg-red-50 border border-red-200 text-red-700 px-4 py-3 text-sm">
+        <div className="mb-5 sm:mb-6 rounded-lg bg-red-50 border border-red-200 text-red-700 px-4 py-3 text-sm break-words">
           {error}
         </div>
       )}
 
       {/* ================= Cards ================= */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-5 hover:shadow-md transition-shadow">
-          <div className="flex justify-between items-start">
-            <div>
-              <p className="text-xs sm:text-sm text-gray-500">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6 mb-5 sm:mb-8">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 sm:p-5 hover:shadow-md transition-shadow min-w-0">
+          <div className="flex justify-between items-start gap-2">
+            <div className="min-w-0">
+              <p className="text-[11px] sm:text-sm text-gray-500 truncate">
                 Total Orders
               </p>
-              <h2 className="text-xl sm:text-3xl font-bold mt-1 sm:mt-2 text-gray-900">
+              <h2 className="text-lg sm:text-2xl lg:text-3xl font-bold mt-0.5 sm:mt-2 text-gray-900">
                 {stats.totalOrders}
               </h2>
             </div>
-            <div className="rounded-lg bg-blue-50 p-2 sm:p-2.5">
-              <ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />
+            <div className="rounded-lg bg-blue-50 p-1.5 sm:p-2.5 shrink-0">
+              <ShoppingBag className="w-4 h-4 sm:w-6 sm:h-6 text-blue-500" />
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-5 hover:shadow-md transition-shadow">
-          <div className="flex justify-between items-start">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 sm:p-5 hover:shadow-md transition-shadow min-w-0">
+          <div className="flex justify-between items-start gap-2">
             <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-500">Revenue</p>
-              <h2 className="text-xl sm:text-3xl font-bold mt-1 sm:mt-2 text-gray-900 truncate">
+              <p className="text-[11px] sm:text-sm text-gray-500 truncate">
+                Revenue
+              </p>
+              <h2 className="text-lg sm:text-2xl lg:text-3xl font-bold mt-0.5 sm:mt-2 text-gray-900 truncate">
                 ₹{stats.revenue.toLocaleString()}
               </h2>
             </div>
-            <div className="rounded-lg bg-green-50 p-2 sm:p-2.5 shrink-0">
-              <IndianRupee className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" />
+            <div className="rounded-lg bg-green-50 p-1.5 sm:p-2.5 shrink-0">
+              <IndianRupee className="w-4 h-4 sm:w-6 sm:h-6 text-green-500" />
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-5 hover:shadow-md transition-shadow">
-          <div className="flex justify-between items-start">
-            <div>
-              <p className="text-xs sm:text-sm text-gray-500">Delivered</p>
-              <h2 className="text-xl sm:text-3xl font-bold mt-1 sm:mt-2 text-gray-900">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 sm:p-5 hover:shadow-md transition-shadow min-w-0">
+          <div className="flex justify-between items-start gap-2">
+            <div className="min-w-0">
+              <p className="text-[11px] sm:text-sm text-gray-500 truncate">
+                Delivered
+              </p>
+              <h2 className="text-lg sm:text-2xl lg:text-3xl font-bold mt-0.5 sm:mt-2 text-gray-900">
                 {stats.delivered}
               </h2>
             </div>
-            <div className="rounded-lg bg-emerald-50 p-2 sm:p-2.5">
-              <Package className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600" />
+            <div className="rounded-lg bg-emerald-50 p-1.5 sm:p-2.5 shrink-0">
+              <Package className="w-4 h-4 sm:w-6 sm:h-6 text-emerald-600" />
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-5 hover:shadow-md transition-shadow">
-          <div className="flex justify-between items-start">
-            <div>
-              <p className="text-xs sm:text-sm text-gray-500">Pending</p>
-              <h2 className="text-xl sm:text-3xl font-bold mt-1 sm:mt-2 text-gray-900">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 sm:p-5 hover:shadow-md transition-shadow min-w-0">
+          <div className="flex justify-between items-start gap-2">
+            <div className="min-w-0">
+              <p className="text-[11px] sm:text-sm text-gray-500 truncate">
+                Pending
+              </p>
+              <h2 className="text-lg sm:text-2xl lg:text-3xl font-bold mt-0.5 sm:mt-2 text-gray-900">
                 {stats.pending}
               </h2>
             </div>
-            <div className="rounded-lg bg-orange-50 p-2 sm:p-2.5">
-              <Users className="w-5 h-5 sm:w-6 sm:h-6 text-orange-500" />
+            <div className="rounded-lg bg-orange-50 p-1.5 sm:p-2.5 shrink-0">
+              <Users className="w-4 h-4 sm:w-6 sm:h-6 text-orange-500" />
             </div>
           </div>
         </div>
       </div>
 
       {/* ================= Filters ================= */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-5 mb-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-          <div className="relative sm:col-span-2 lg:col-span-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 sm:p-5 mb-5 sm:mb-6">
+        <div className="flex flex-row gap-2 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4">
+          <div className="relative flex-1 min-w-0 sm:col-span-2 lg:col-span-1">
+            <Search className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
             <input
               type="text"
-              placeholder="Search by order ID, name or email..."
-              className="border border-gray-200 rounded-lg pl-9 sm:pl-10 pr-4 py-2 w-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Search orders..."
+              className="border border-gray-200 rounded-lg pl-8 sm:pl-10 pr-2 sm:pr-4 py-2 w-full text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -270,7 +267,7 @@ const OrdersPage = () => {
           </div>
 
           <select
-            className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="border border-gray-200 rounded-lg px-1.5 sm:px-3 py-2 text-xs sm:text-sm w-20 sm:w-full shrink-0 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             value={statusFilter}
             onChange={(e) => {
               setStatusFilter(e.target.value);
@@ -286,7 +283,7 @@ const OrdersPage = () => {
           </select>
 
           <select
-            className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="border border-gray-200 rounded-lg px-1.5 sm:px-3 py-2 text-xs sm:text-sm w-20 sm:w-full shrink-0 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             value={paymentFilter}
             onChange={(e) => {
               setPaymentFilter(e.target.value);
@@ -301,7 +298,7 @@ const OrdersPage = () => {
         </div>
       </div>
 
-      {/* ================= Orders: Table (desktop) ================= */}
+      {/* ================= Orders: Table (desktop / tablet) ================= */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hidden md:block">
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -336,16 +333,16 @@ const OrdersPage = () => {
                   <td className="p-4 font-mono text-sm text-gray-600">
                     #{order._id.slice(-8)}
                   </td>
-                  <td className="p-4">
-                    <p className="font-semibold text-gray-900">
+                  <td className="p-4 max-w-[220px]">
+                    <p className="font-semibold text-gray-900 truncate">
                       {order.shippingAddress?.fullName}
                     </p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 truncate">
                       {order.shippingAddress?.phone}
                     </p>
                   </td>
-                  <td className="p-4 font-medium text-gray-900">
-                    ₹{order.totalAmount.toLocaleString()}
+                  <td className="p-4 font-medium text-gray-900 whitespace-nowrap">
+                    ₹{(order.totalAmount ?? 0).toLocaleString()}
                   </td>
                   <td className="p-4">
                     <span
@@ -374,7 +371,6 @@ const OrdersPage = () => {
                       >
                         <Eye className="w-5 h-5 text-blue-600" />
                       </button>
-
                     </div>
                   </td>
                 </tr>
@@ -397,22 +393,22 @@ const OrdersPage = () => {
         {currentOrders.map((order) => (
           <div
             key={order._id}
-            className="bg-white rounded-xl shadow-sm border border-gray-100 p-4"
+            className="bg-white rounded-xl shadow-sm border border-gray-100 p-3.5 sm:p-4"
           >
-            <div className="flex justify-between items-start mb-3">
-              <div>
-                <p className="font-mono text-xs text-gray-500">
+            <div className="flex justify-between items-start gap-2 mb-3">
+              <div className="min-w-0">
+                <p className="font-mono text-xs text-gray-500 truncate">
                   #{order._id.slice(-8)}
                 </p>
-                <p className="font-semibold text-gray-900 mt-0.5">
+                <p className="font-semibold text-gray-900 mt-0.5 truncate">
                   {order.shippingAddress?.fullName}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 truncate">
                   {order.shippingAddress?.phone}
                 </p>
               </div>
               <span
-                className={`px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getStatusColor(
+                className={`px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-medium whitespace-nowrap shrink-0 ${getStatusColor(
                   order.orderStatus
                 )}`}
               >
@@ -421,9 +417,9 @@ const OrdersPage = () => {
             </div>
 
             <div className="flex justify-between items-center border-t border-gray-100 pt-3">
-              <div>
+              <div className="min-w-0">
                 <p className="font-semibold text-gray-900">
-                  ₹{order.totalAmount.toLocaleString()}
+                  ₹{(order.totalAmount ?? 0).toLocaleString()}
                 </p>
                 <span
                   className={`text-xs font-medium ${getPaymentColor(
@@ -433,20 +429,13 @@ const OrdersPage = () => {
                   {order.paymentStatus}
                 </span>
               </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setSelectedOrder(order)}
-                  className="p-2 rounded-lg bg-blue-50 hover:bg-blue-100 transition-colors"
-                >
-                  <Eye className="w-4 h-4 text-blue-600" />
-                </button>
-                <button
-                  onClick={() => setSelectedOrder(order._id)}
-                  className="p-2 rounded-lg bg-red-50 hover:bg-red-100 transition-colors"
-                >
-                  Close
-                </button>
-              </div>
+              <button
+                onClick={() => setSelectedOrder(order)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 transition-colors text-xs font-medium text-blue-600 shrink-0"
+              >
+                <Eye className="w-4 h-4" />
+                View
+              </button>
             </div>
           </div>
         ))}
@@ -460,11 +449,11 @@ const OrdersPage = () => {
 
       {/* ================= Pagination ================= */}
       {totalPages > 1 && (
-        <div className="flex flex-wrap justify-center md:justify-end items-center mt-6 gap-2">
+        <div className="flex flex-wrap justify-center md:justify-end items-center mt-6 gap-1.5 sm:gap-2">
           <button
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((prev) => prev - 1)}
-            className="px-3 sm:px-4 py-2 rounded-lg border border-gray-200 text-sm disabled:opacity-40 hover:bg-gray-50 transition-colors"
+            className="px-3 sm:px-4 py-2 rounded-lg border border-gray-200 text-xs sm:text-sm disabled:opacity-40 hover:bg-gray-50 transition-colors"
           >
             Previous
           </button>
@@ -473,10 +462,11 @@ const OrdersPage = () => {
             <button
               key={index}
               onClick={() => setCurrentPage(index + 1)}
-              className={`w-9 h-9 rounded-lg text-sm transition-colors ${currentPage === index + 1
+              className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg text-xs sm:text-sm transition-colors ${
+                currentPage === index + 1
                   ? "bg-blue-600 text-white"
                   : "border border-gray-200 hover:bg-gray-50"
-                }`}
+              }`}
             >
               {index + 1}
             </button>
@@ -485,7 +475,7 @@ const OrdersPage = () => {
           <button
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage((prev) => prev + 1)}
-            className="px-3 sm:px-4 py-2 rounded-lg border border-gray-200 text-sm disabled:opacity-40 hover:bg-gray-50 transition-colors"
+            className="px-3 sm:px-4 py-2 rounded-lg border border-gray-200 text-xs sm:text-sm disabled:opacity-40 hover:bg-gray-50 transition-colors"
           >
             Next
           </button>
@@ -495,34 +485,32 @@ const OrdersPage = () => {
       {/* ================= View Order Modal ================= */}
       {selectedOrder && (
         <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
-          <div className="bg-white rounded-t-2xl sm:rounded-xl w-full sm:max-w-3xl max-h-[92vh] sm:max-h-[90vh] overflow-y-auto p-5 sm:p-8 relative">
+          <div className="bg-white rounded-t-2xl sm:rounded-xl w-full sm:max-w-3xl max-h-[92vh] sm:max-h-[90vh] overflow-y-auto p-4 sm:p-8 relative">
             <button
               onClick={() => setSelectedOrder(null)}
-              className="absolute top-4 right-4 sm:right-5 p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+              className="absolute top-3 right-3 sm:top-4 sm:right-5 p-1.5 rounded-lg hover:bg-gray-100 transition-colors z-10"
             >
               <X className="w-5 h-5 text-gray-500" />
             </button>
 
-            <h2 className="text-xl sm:text-2xl font-bold mb-5 sm:mb-6 pr-8 text-gray-900">
+            <h2 className="text-lg sm:text-2xl font-bold mb-4 sm:mb-6 pr-8 text-gray-900">
               Order Details
             </h2>
 
-            <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
-              <div>
-                <h3 className="font-semibold mb-3 text-gray-900">
-                  Customer
-                </h3>
+            <div className="grid sm:grid-cols-2 gap-5 sm:gap-8">
+              <div className="min-w-0">
+                <h3 className="font-semibold mb-3 text-gray-900">Customer</h3>
                 <div className="space-y-1.5 text-sm text-gray-700">
-                  <p>
+                  <p className="break-words">
                     <span className="text-gray-500">Name:</span>{" "}
                     {selectedOrder.shippingAddress?.fullName}
                   </p>
-                  <p>
+                  <p className="break-words">
                     <span className="text-gray-500">Phone:</span>{" "}
                     {selectedOrder.shippingAddress?.phone}
                   </p>
                   <p className="text-gray-500 pt-1">Address:</p>
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-gray-600 leading-relaxed break-words">
                     {selectedOrder.shippingAddress?.address}
                     {selectedOrder.shippingAddress?.address && ", "}
                     {selectedOrder.shippingAddress?.city}
@@ -533,7 +521,7 @@ const OrdersPage = () => {
                 </div>
               </div>
 
-              <div>
+              <div className="min-w-0">
                 <h3 className="font-semibold mb-3 text-gray-900">
                   Order Summary
                 </h3>
@@ -545,7 +533,7 @@ const OrdersPage = () => {
                   <p>
                     <span className="text-gray-500">Total:</span>{" "}
                     <span className="font-semibold">
-                      ₹{selectedOrder.totalAmount.toLocaleString()}
+                      ₹{(selectedOrder.totalAmount ?? 0).toLocaleString()}
                     </span>
                   </p>
                   <p>
@@ -580,26 +568,26 @@ const OrdersPage = () => {
             </div>
 
             {/* Products */}
-            <div className="mt-8">
-              <h3 className="font-semibold mb-4 text-gray-900">
+            <div className="mt-6 sm:mt-8">
+              <h3 className="font-semibold mb-3 sm:mb-4 text-gray-900">
                 Ordered Products
               </h3>
-              <div className="space-y-3">
-                {selectedOrder.items.map((item) => (
+              <div className="space-y-2.5 sm:space-y-3">
+                {(selectedOrder.items ?? []).map((item, idx) => (
                   <div
-                    key={item.product._id}
-                    className="flex justify-between items-center border border-gray-100 rounded-lg p-3 sm:p-4"
+                    key={item.product?._id ?? idx}
+                    className="flex justify-between items-center gap-3 border border-gray-100 rounded-lg p-3 sm:p-4"
                   >
-                    <div className="min-w-0 pr-3">
+                    <div className="min-w-0 pr-2">
                       <p className="font-semibold text-gray-900 truncate">
-                        {item.product?.name}
+                        {item.product?.name ?? "Product unavailable"}
                       </p>
                       <p className="text-sm text-gray-500">
                         Qty: {item.quantity}
                       </p>
                     </div>
-                    <div className="font-medium text-gray-900 whitespace-nowrap">
-                      ₹{item.price.toLocaleString()}
+                    <div className="font-medium text-gray-900 whitespace-nowrap shrink-0">
+                      ₹{(item.price ?? 0).toLocaleString()}
                     </div>
                   </div>
                 ))}
@@ -607,12 +595,9 @@ const OrdersPage = () => {
             </div>
 
             {/* Footer */}
-            <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 mt-8">
-              <div className="flex justify-end mt-8">
-                
-              </div>
+            <div className="flex justify-end mt-6 sm:mt-8">
               <button
-                className="px-5 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors"
                 onClick={() => setSelectedOrder(null)}
               >
                 Close
