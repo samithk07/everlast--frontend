@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { api } from "../api/api"
 import { toast } from "react-toastify";
-import Navbar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 
 // Water theme palette (shared with OrderPage, Navbar, Footer)
@@ -371,7 +371,7 @@ function CheckOutPage() {
   if (displayItems.length === 0) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Navbar />
+        <NavBar />
         <div
           className="flex-1 flex flex-col items-center justify-center px-4"
           style={{ background: `linear-gradient(to bottom, ${colors.background}, #ffffff)` }}
@@ -399,7 +399,7 @@ function CheckOutPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <NavBar />
 
       <div
         className="flex-1 py-8 md:py-12 px-4"
