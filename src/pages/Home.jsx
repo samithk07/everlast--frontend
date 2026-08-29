@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import NavBar from '../components/NavBar';
-import { TestTube, Shield, Users, CheckCircle, Phone, Award, FileText, ShoppingCart, X } from 'lucide-react';
+import {
+    TestTube, Shield, Users, CheckCircle, Phone, Award, FileText,
+    ShoppingCart, X, Droplet, SlidersHorizontal, ShieldCheck, Play, Check,
+    Leaf, ThumbsUp, Truck
+} from 'lucide-react';
 import Footer from '../components/Footer';
 import { useCart } from '../context/CartContext';
 
@@ -82,7 +86,7 @@ const HomePage = () => {
         }
     ];
 
-    
+
 
     const handleInputChange = (e) => {
         setFormData({
@@ -117,13 +121,13 @@ const HomePage = () => {
 
 Please contact the customer to schedule the water test.`;
 
-        
+
         const encodedMessage = encodeURIComponent(message);
 
-        
+
         const whatsappUrl = `https://wa.me/${adminNumber}?text=${encodedMessage}`;
 
-        
+
         window.open(whatsappUrl, '_blank');
     };
 
@@ -252,144 +256,166 @@ Please contact the customer to schedule the water test.`;
                     </div>
                 )}
 
+              
+
                 {/* 🌊 1. Hero Section */}
-                <section
-                    className="relative py-20 lg:py-32 text-white"
-                    style={{
-                        background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`
-                    }}
-                >
-                    <div className="absolute inset-0 bg-black/10"></div>
-                    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <section className="relative overflow-hidden bg-white">
+                    {/* Background photo */}
+                    <div
+                        className="absolute inset-0 bg-cover bg-center"
+                        style={{ backgroundImage: "url('public/image/hero.png')" }}
+                    ></div>
+                    {/* Legibility scrim so text reads over the photo, fading out toward the image on the right */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 lg:via-white/0 to-white/20"></div>
+
+                    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28">
                         <div className="grid lg:grid-cols-2 gap-12 items-center">
-                            <div className="text-center lg:text-left">
-                                <h1 className="text-4xl lg:text-6xl font-bold leading-tight mb-6">
-                                    Check Your Water TDS Before Buying a Purifier
-                                </h1>
-                                <p className="text-xl lg:text-2xl mb-8" style={{ color: colors.accent }}>
-                                    Accurate purifier recommendations based on your area water.
+
+                            {/* Left content */}
+                            <div>
+                                <p
+                                    className="text-xs sm:text-sm font-bold tracking-widest uppercase mb-4"
+                                    style={{ color: colors.primary }}
+                                >
+                                    Advanced Water Purification
                                 </p>
 
-                                <form onSubmit={handleSubmit}>
-                                    <div
-                                        className="rounded-2xl p-6 mb-8 backdrop-blur-sm"
-                                        style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
+                                <h1
+                                    className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05] mb-6"
+                                    style={{ color: colors.text }}
+                                >
+                                    Pure Water
+                                    <br />
+                                    Starts Here
+                                    <span style={{ color: colors.primary }}>.</span>
+                                </h1>
+
+                                <p className="text-lg lg:text-xl text-gray-600 mb-6 max-w-md">
+                                    Advanced purification for cleaner, safer-tasting water every day.
+                                </p>
+
+                                <div
+                                    className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm sm:text-base font-semibold mb-8"
+                                    style={{ color: colors.primary }}
+                                >
+                                    <span>RO + UV + UF</span>
+                                    <span className="text-gray-300">|</span>
+                                    <span>Multi-Stage Purification</span>
+                                    <span className="text-gray-300">|</span>
+                                    <span>Smart Water Protection</span>
+                                </div>
+
+                                <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                                    <a
+                                        href="#products"
+                                        className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-semibold text-white transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
+                                        style={{ backgroundColor: colors.primary }}
                                     >
-                                        <div className="grid md:grid-cols-2 gap-4 mb-4">
-                                            <input
-                                                type="text"
-                                                name="name"
-                                                placeholder="Your Name *"
-                                                value={formData.name}
-                                                onChange={handleInputChange}
-                                                required
-                                                className="px-4 py-3 rounded-lg border text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white"
-                                                style={{
-                                                    backgroundColor: 'rgba(255,255,255,0.1)',
-                                                    borderColor: 'rgba(255,255,255,0.2)'
-                                                }}
-                                            />
-                                            <input
-                                                type="tel"
-                                                name="phone"
-                                                placeholder="Phone Number *"
-                                                value={formData.phone}
-                                                onChange={handleInputChange}
-                                                required
-                                                className="px-4 py-3 rounded-lg border text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white"
-                                                style={{
-                                                    backgroundColor: 'rgba(255,255,255,0.1)',
-                                                    borderColor: 'rgba(255,255,255,0.2)'
-                                                }}
-                                            />
-                                        </div>
-                                        <div className="grid md:grid-cols-2 gap-4 mb-4">
-                                            <input
-                                                type="text"
-                                                name="city"
-                                                placeholder="City *"
-                                                value={formData.city}
-                                                onChange={handleInputChange}
-                                                required
-                                                className="px-4 py-3 rounded-lg border text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white"
-                                                style={{
-                                                    backgroundColor: 'rgba(255,255,255,0.1)',
-                                                    borderColor: 'rgba(255,255,255,0.2)'
-                                                }}
-                                            />
-                                            <input
-                                                type="text"
-                                                name="address"
-                                                placeholder="Full Address"
-                                                value={formData.address}
-                                                onChange={handleInputChange}
-                                                className="px-4 py-3 rounded-lg border text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white"
-                                                style={{
-                                                    backgroundColor: 'rgba(255,255,255,0.1)',
-                                                    borderColor: 'rgba(255,255,255,0.2)'
-                                                }}
-                                            />
-                                        </div>
-                                        <div className="flex flex-col sm:flex-row gap-4">
-                                            <button
-                                                type="submit"
-                                                disabled={isSubmitting}
-                                                className="flex-1 py-3 px-6 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                                                style={{
-                                                    backgroundColor: isSubmitting ? colors.secondary : 'white',
-                                                    color: colors.primary
-                                                }}
-                                                onMouseEnter={(e) => {
-                                                    if (!isSubmitting) {
-                                                        e.target.style.backgroundColor = colors.background;
-                                                    }
-                                                }}
-                                                onMouseLeave={(e) => {
-                                                    if (!isSubmitting) {
-                                                        e.target.style.backgroundColor = 'white';
-                                                    }
-                                                }}
-                                            >
-                                                <TestTube size={20} />
-                                                {isSubmitting ? 'Booking...' : 'Book Free Home Water Test'}
-                                            </button>
-                                        </div>
-                                        <p className="text-blue-200 text-sm mt-3 text-center">
-                                            * Required fields. We'll contact you within 24 hours.
-                                        </p>
-                                    </div>
-                                </form>
+                                        <Droplet size={18} />
+                                        Shop Water Purifiers
+                                    </a>
+                                    <a
+                                        href="#water-test"
+                                        className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-semibold bg-white border-2 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
+                                        style={{ borderColor: colors.primary, color: colors.primary }}
+                                    >
+                                        <SlidersHorizontal size={18} />
+                                        Find Your Purifier
+                                    </a>
+                                </div>
+
+                                <div className="flex flex-wrap gap-x-6 gap-y-2">
+                                    {["Free Installation", "Genuine Filters", "Warranty Included"].map((item) => (
+                                        <span key={item} className="flex items-center gap-2 text-sm text-gray-700">
+                                            <Check size={16} style={{ color: colors.primary }} />
+                                            {item}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
 
-                            <div className="relative">
-                                <div
-                                    className="rounded-3xl p-8 transform rotate-3 backdrop-blur-sm"
-                                    style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}
-                                >
-                                    <img
-                                        src="/image/home first image.webp"
-                                        alt="Water Purifier"
-                                        className="rounded-2xl transform -rotate-3 shadow-2xl"
-                                    />
-                                </div>
-                                {/* Animated water droplets */}
-                                <div
-                                    className="absolute -top-4 -right-4 w-8 h-8 rounded-full animate-bounce"
-                                    style={{ backgroundColor: colors.accent }}
-                                ></div>
-                                <div
-                                    className="absolute -bottom-4 -left-4 w-6 h-6 rounded-full animate-pulse"
-                                    style={{ backgroundColor: colors.primary }}
-                                ></div>
-                            </div>
+                           
                         </div>
+                    </div>
+                </section>
+
+                {/* 📋 Book Free Water Test (relocated from hero) */}
+                <section id="water-test" className="py-16" style={{ backgroundColor: colors.background }}>
+                    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center mb-8">
+                            <h2 className="text-3xl lg:text-4xl font-bold mb-3" style={{ color: colors.text }}>
+                                Book Your Free Home Water Test
+                            </h2>
+                            <p className="text-gray-600">
+                                Get accurate purifier recommendations based on your area's water.
+                            </p>
+                        </div>
+
+                        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-6 sm:p-8">
+                            <div className="grid md:grid-cols-2 gap-4 mb-4">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder="Your Name *"
+                                    value={formData.name}
+                                    onChange={handleInputChange}
+                                    required
+                                    className="px-4 py-3 rounded-lg border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2"
+                                    style={{ '--tw-ring-color': colors.primary }}
+                                />
+                                <input
+                                    type="tel"
+                                    name="phone"
+                                    placeholder="Phone Number *"
+                                    value={formData.phone}
+                                    onChange={handleInputChange}
+                                    required
+                                    className="px-4 py-3 rounded-lg border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2"
+                                    style={{ '--tw-ring-color': colors.primary }}
+                                />
+                            </div>
+                            <div className="grid md:grid-cols-2 gap-4 mb-4">
+                                <input
+                                    type="text"
+                                    name="city"
+                                    placeholder="City *"
+                                    value={formData.city}
+                                    onChange={handleInputChange}
+                                    required
+                                    className="px-4 py-3 rounded-lg border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2"
+                                    style={{ '--tw-ring-color': colors.primary }}
+                                />
+                                <input
+                                    type="text"
+                                    name="address"
+                                    placeholder="Full Address"
+                                    value={formData.address}
+                                    onChange={handleInputChange}
+                                    className="px-4 py-3 rounded-lg border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2"
+                                    style={{ '--tw-ring-color': colors.primary }}
+                                />
+                            </div>
+
+                            <button
+                                type="submit"
+                                disabled={isSubmitting}
+                                className="w-full py-3.5 rounded-lg font-semibold text-white transition-colors duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                style={{ backgroundColor: isSubmitting ? colors.secondary : colors.primary }}
+                            >
+                                <TestTube size={20} />
+                                {isSubmitting ? 'Booking...' : 'Book Free Home Water Test'}
+                            </button>
+
+                            <p className="text-gray-500 text-sm mt-3 text-center">
+                                * Required fields. We'll contact you within 24 hours.
+                            </p>
+                        </form>
                     </div>
                 </section>
 
                 {/* 🌟 2. USP Section */}
                 <section
                     className="py-16"
-                    style={{ backgroundColor: colors.background }}
                 >
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <h2 className="text-3xl lg:text-4xl font-bold text-center mb-12">
@@ -421,7 +447,7 @@ Please contact the customer to schedule the water test.`;
                             ].map((feature, index) => (
                                 <div
                                     key={index}
-                                    className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-center hover:transform hover:scale-105"
+                                    className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-center hover:transform hover:scale-105 border border-gray-100"
                                 >
                                     <div className="flex justify-center mb-4">
                                         {feature.icon}
@@ -440,6 +466,7 @@ Please contact the customer to schedule the water test.`;
 
                 {/* 🛒 4. Top Selling Purifiers */}
                 <section
+                    id="products"
                     className="py-16"
                     style={{ backgroundColor: colors.background }}
                 >
@@ -524,11 +551,9 @@ Please contact the customer to schedule the water test.`;
                     </div>
                 </section>
 
-               
 
-              
 
-                
+
                 <section className="py-16 bg-white">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <h2 className="text-3xl lg:text-4xl font-bold text-center mb-12">

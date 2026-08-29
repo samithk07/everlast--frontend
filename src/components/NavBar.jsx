@@ -1,47 +1,81 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, LogOut, X, Home, Info, Package, LogIn, UserPlus, Menu, Droplets, Wrench } from "lucide-react";
+import {
+    ShoppingCart,
+    User,
+    LogOut,
+    X,
+    Home,
+    Info,
+    Package,
+    LogIn,
+    UserPlus,
+    Menu,
+    Droplets,
+    Wrench,
+    ChevronDown
+} from "lucide-react";
+
 import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext'; // Import AuthContext
+import { useAuth } from '../context/AuthContext';
+
+const colors = {
+    primary: '#00A9FF',
+    secondary: '#89CFF3',
+    accent: '#A0E9FF',
+    background: '#CDF5FD',
+    text: '#0B0C10',
+};
 
 const NavBar = () => {
     const { count } = useCart();
-    const { user, isAuthenticated, logoutUser } = useAuth(); // Use AuthContext
+    const { user, isAuthenticated, logoutUser } = useAuth();
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [activeLink, setActiveLink] = useState('');
-    const [isScrolled, setIsScrolled] = useState(false);
+    const [activeLink, setActiveLink] = useState('/home');
+
     const navigate = useNavigate();
 
-    // Scroll effect
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    // Close dropdown when clicking outside
+    // Close dropdown and mobile menu when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (isDropdownOpen && !event.target.closest('.user-dropdown')) {
+
+            if (
+                isDropdownOpen &&
+                !event.target.closest('.user-dropdown')
+            ) {
                 setIsDropdownOpen(false);
             }
-            if (isMenuOpen && !event.target.closest('.mobile-menu') && !event.target.closest('.mobile-menu-button')) {
+
+            if (
+                isMenuOpen &&
+                !event.target.closest('.mobile-menu') &&
+                !event.target.closest('.mobile-menu-button')
+            ) {
                 setIsMenuOpen(false);
             }
         };
+
         document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener(
+                'mousedown',
+                handleClickOutside
+            );
+        };
     }, [isDropdownOpen, isMenuOpen]);
 
+    // Navigation handler
     const handleNavigation = (path) => {
         navigate(path);
         setIsMenuOpen(false);
+        setIsDropdownOpen(false);
         setActiveLink(path);
     };
 
+    // User button action
     const handleUserAction = () => {
         if (isAuthenticated) {
             setIsDropdownOpen(!isDropdownOpen);
@@ -50,274 +84,638 @@ const NavBar = () => {
         }
     };
 
+    // Logout
     const handleLogout = async () => {
-    await logoutUser();
+        await logoutUser();
 
-    setIsDropdownOpen(false);
-    setIsMenuOpen(false);
+        setIsDropdownOpen(false);
+        setIsMenuOpen(false);
 
-    navigate("/login", { replace: true });
-};
+        navigate("/login", { replace: true });
+    };
 
+    // Toggle mobile menu
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
-    const menuItems = [
-        { path: '/login', icon: LogIn, label: 'Login', showWhenLoggedIn: false },
-        { path: '/register', icon: UserPlus, label: 'Sign Up', showWhenLoggedIn: false },
-        { path: '/home', icon: Home, label: 'Home', showWhenLoggedIn: true },
-        { path: '/about', icon: Info, label: 'About Us', showWhenLoggedIn: true },
-        { path: '/orders', icon: Package, label: 'Orders', showWhenLoggedIn: true },
-        { path: '/services/status', icon: Wrench, label: 'Services', showWhenLoggedIn: true },
+    // Main navigation links
+    const navLinks = [
+        {
+            path: '/home',
+            label: 'Home',
+            icon: Home
+        },
+        {
+            path: '/products',
+            label: 'Products',
+            icon: Droplets
+        },
+        {
+            path: '/services',
+            label: 'Services',
+            icon: Wrench
+        },
+        {
+            path: '/about',
+            label: 'About',
+            icon: Info
+        },
     ];
-
-
-    
-    const filteredMenuItems = menuItems.filter(item => 
-        isAuthenticated ? item.showWhenLoggedIn : !item.showWhenLoggedIn
-    );
 
     const cartItemsCount = count;
 
     // Get user display name
     const getUserDisplayName = () => {
         if (!user) return 'Welcome';
-        return user.username || user.name || user.email?.split('@')[0] || 'User';
+
+        return (
+            user.username ||
+            user.name ||
+            user.email?.split('@')[0] ||
+            'User'
+        );
     };
 
     // Get user email
     const getUserEmail = () => {
         if (!user) return 'Login / Register';
+
         return user.email || 'My Account';
     };
 
     return (
-        <nav className={`w-full fixed top-0 z-50 transition-all duration-300 ${
-            isScrolled 
-                ? 'shadow-lg bg-[#00A9FF] border-b border-[#89CFF3]' 
-                : 'bg-[#00A9FF] border-b border-[#A0E9FF]'
-        }`}>
-            {/* Main NavBar - Reduced width */}
-            <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
-                {/* Logo and Mobile Menu */}
-                <div className="flex items-center gap-3">
-                    <div 
-                        className="flex items-center gap-2 cursor-pointer transition-all duration-300 hover:scale-105 hover:drop-shadow-lg"
+        <>
+            {/* =========================
+                DESKTOP / MAIN NAVBAR
+            ========================== */}
+            <nav className="w-full bg-white border-b border-gray-100 shadow-sm relative z-50">
+
+                <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 sm:gap-6 px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5">
+
+                    {/* =========================
+                        LOGO
+                    ========================== */}
+                    <div
+                        className="flex items-center gap-2 cursor-pointer flex-shrink-0"
                         onClick={() => handleNavigation('/home')}
                     >
-                        <img 
-                            src="/image/ChatGPT Image Nov 27, 2025, 02_32_36 PM.png" 
-                            alt="Everlast Water Solutions" 
-                            className="h-12 w-12 duration-300 hover:border-[#A0E9FF]"
+                        <img
+                            src="public/everlastLogo-removebg-preview.png"
+                            alt="Everlast Water Solutions"
+                            className="h-11 w-11 sm:h-12 sm:w-12 lg:h-14 lg:w-14 object-contain flex-shrink-0"
                         />
+
+                        <span className="text-lg sm:text-xl lg:text-2xl font-bold whitespace-nowrap">
+                            <span style={{ color: colors.text }}>
+                                Everlast
+                            </span>{' '}
+
+                            <span style={{ color: colors.primary }}>
+                                Water
+                            </span>
+                        </span>
                     </div>
-                    <span className="text-lg font-bold text-white transition-colors duration-300 hover:text-gray-800">
-                        Everlast Water Solution
-                    </span>
-                </div>
 
-                {/* Navigation Links - Desktop */}
-                <div className="hidden md:flex items-center gap-1">
-                    {['/home', '/products', '/services', '/about'].map((path) => (
-                        <button
-                            key={path}
-                            className={`font-medium transition-all duration-300 py-2 px-3 rounded-lg relative group ${
-                                activeLink === path 
-                                ? 'text-black bg-[#A0E9FF] shadow-sm scale-105' 
-                                : 'text-black hover:text-gray-800'
-                            }`}
-                            onClick={() => handleNavigation(path)}
-                            onKeyPress={(e) => e.key === 'Enter' && handleNavigation(path)}
-                            tabIndex={0}
-                        >
-                            {/* Background highlight on hover */}
-                            <div className={`absolute inset-0 bg-[#A0E9FF] rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 -z-10 ${
-                                activeLink === path ? 'opacity-100' : ''
-                            }`} />
-                            
-                            {/* Text content */}
-                            <span className="relative z-10 transition-all duration-300 group-hover:scale-105 text-sm">
-                                {path === '/home' ? 'Home' : 
-                                 path.split('/')[1].charAt(0).toUpperCase() + path.split('/')[1].slice(1)}
-                            </span>
-                            
-                            {/* Bottom border effect */}
-                            <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gray-800 transition-all duration-300 group-hover:w-4/5 ${
-                                activeLink === path ? 'w-4/5 bg-gray-800' : ''
-                            }`} />
-                            
-                            {/* Subtle glow effect */}
-                            <div className={`absolute inset-0 rounded-lg bg-[#A0E9FF] opacity-0 transition-all duration-300 group-hover:opacity-20 -z-10 ${
-                                activeLink === path ? 'opacity-20' : ''
-                            }`} />
-                        </button>
-                    ))}
-                </div>
 
-                {/* Icons Section */}
-                <div className="flex items-center gap-2">
-                    {/* Cart Icon with Count */}
-                    <button 
-                        className="p-2 rounded-lg transition-all duration-300 hover:bg-[#A0E9FF] relative group focus:outline-none focus:ring-2 focus:ring-gray-800"
-                        onClick={() => handleNavigation('/cart')}
-                        tabIndex={0}
-                    >
-                        <div className="absolute inset-0 bg-[#A0E9FF] rounded-lg opacity-0 transition-all duration-300 group-hover:opacity-100 -z-10" />
-                        <ShoppingCart size={20} className="text-black transition-all duration-300 group-hover:scale-110" />
-                        {cartItemsCount > 0 && (
-                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold animate-pulse border border-gray-800 transition-all duration-300 group-hover:border-white">
-                                {cartItemsCount}
-                            </span>
-                        )}
-                    </button>
+                    {/* =========================
+                        DESKTOP NAVIGATION
+                    ========================== */}
+                    <div className="hidden md:flex items-center gap-1 flex-shrink-0">
 
-                    {/* Menu Bar Icon */}
-                    <button 
-                        className="mobile-menu-button p-2 rounded-lg transition-all duration-300 hover:bg-[#A0E9FF] group focus:outline-none focus:ring-2 focus:ring-gray-800"
-                        onClick={toggleMenu}
-                        tabIndex={0}
-                    >
-                        <div className="absolute inset-0 bg-[#A0E9FF] rounded-lg opacity-0 transition-all duration-300 group-hover:opacity-100 -z-10" />
-                        <Menu size={20} className="text-black transition-all duration-300 group-hover:scale-110 group-hover:text-gray-800" />
-                    </button>
+                        {navLinks.map((link) => {
+                            const Icon = link.icon;
+                            const isActive =
+                                activeLink === link.path;
 
-                    {/* User Button */}
-                    <div className="relative user-dropdown">
-                        <button
-                            className="flex items-center gap-2 p-2 rounded-lg transition-all duration-300 hover:bg-[#A0E9FF] group focus:outline-none focus:ring-2 focus:ring-gray-800"
-                            onClick={handleUserAction}
-                            tabIndex={0}
-                        >
-                            <div className="absolute inset-0 bg-[#A0E9FF] rounded-lg opacity-0 transition-all duration-300 group-hover:opacity-100 -z-10" />
-                            <div className="w-8 h-8 bg-[#A0E9FF] rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:bg-[#89CFF3] border border-black group-hover:border-gray-800">
-                                <User size={16} className="text-black transition-colors duration-300 group-hover:text-black" />
-                            </div>
-                            <div className="text-left hidden sm:block">
-                                <span className="block text-sm font-medium text-black transition-colors duration-300 group-hover:text-gray-800">
-                                    {getUserDisplayName()}
-                                </span>
-                                <span className="block text-xs text-gray-800 transition-colors duration-300 group-hover:text-gray-700">
-                                    {getUserEmail()}
-                                </span>
-                            </div>
-                        </button>
-
-                        {/* User Dropdown */}
-                        {isAuthenticated && isDropdownOpen && (
-                            <div className="absolute top-full right-0 mt-2 w-48 bg-[#A0E9FF] rounded-lg shadow-xl border border-[#89CFF3] overflow-hidden z-1000 animate-in fade-in slide-in-from-top-2 duration-300">
-                                <div className="p-3 border-b border-[#89CFF3] bg-[#00A9FF]">
-                                    <p className="text-sm font-semibold text-black">{getUserDisplayName()}</p>
-                                    <p className="text-xs text-black truncate">{user.email}</p>
-                                </div>
+                            return (
                                 <button
-                                    className="flex items-center gap-3 w-full px-4 py-3 text-sm text-black transition-all duration-300 hover:bg-[#89CFF3] hover:text-black focus:outline-none focus:bg-[#89CFF3] focus:text-black"
-                                    onClick={handleLogout}
-                                    tabIndex={0}
+                                    key={link.path}
+                                    onClick={() =>
+                                        handleNavigation(link.path)
+                                    }
+                                    className="flex items-center gap-1.5 font-medium text-sm py-2 px-3 rounded-lg transition-colors duration-200"
+                                    style={{
+                                        backgroundColor: isActive
+                                            ? colors.background
+                                            : 'transparent',
+                                        color: colors.text
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        if (!isActive) {
+                                            e.currentTarget.style.backgroundColor =
+                                                colors.background;
+                                        }
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        if (!isActive) {
+                                            e.currentTarget.style.backgroundColor =
+                                                'transparent';
+                                        }
+                                    }}
                                 >
-                                    <LogOut size={16} className="text-black" />
-                                    <span>Logout</span>
+                                    <Icon
+                                        size={16}
+                                        style={{
+                                            color: isActive
+                                                ? colors.primary
+                                                : 'currentColor'
+                                        }}
+                                    />
+
+                                    {link.label}
                                 </button>
-                            </div>
-                        )}
+                            );
+                        })}
                     </div>
-                </div>
-            </div>
 
-            {/* Mobile Menu - Slides from right */}
-            <div className={`mobile-menu fixed inset-0 z-50 transform transition-transform duration-300 ease-in-out ${
-                isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-            }`}>
-                {/* Backdrop */}
-                <div 
-                    className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
-                    onClick={() => setIsMenuOpen(false)}
-                />
-                
-                {/* Menu Content - Reduced width */}
-                <div className="absolute right-0 top-0 h-full w-72 bg-[#00A9FF] shadow-2xl overflow-y-auto border-l border-[#89CFF3]">
-                    {/* Header */}
-                    <div className="flex items-center justify-between p-4 border-b border-[#89CFF3] bg-[#00A9FF]">
-                        <h2 className="text-lg font-bold text-black">Menu</h2>
+
+                    {/* =========================
+                        RIGHT SIDE
+                    ========================== */}
+                    <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+
+                        {/* =========================
+                            CART
+                        ========================== */}
                         <button
-                            onClick={() => setIsMenuOpen(false)}
-                            className="p-2 rounded-lg transition-all duration-300 hover:bg-[#A0E9FF] focus:outline-none focus:ring-2 focus:ring-gray-800"
-                            tabIndex={0}
+                            className="relative w-9 h-9 flex items-center justify-center rounded-full transition-colors duration-200 hover:bg-gray-100"
+                            style={{ color: colors.text }}
+                            onClick={() =>
+                                handleNavigation('/cart')
+                            }
                         >
-                            <X size={20} className="text-black transition-colors duration-300 hover:text-gray-800" />
+                            <ShoppingCart size={19} />
+
+                            {cartItemsCount > 0 && (
+                                <span
+                                    className="absolute -top-0.5 -right-0.5 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-semibold"
+                                    style={{
+                                        backgroundColor:
+                                            colors.primary
+                                    }}
+                                >
+                                    {cartItemsCount}
+                                </span>
+                            )}
                         </button>
-                    </div>
 
-                    {/* User Info */}
-                    {isAuthenticated && user && (
-                        <div className="p-4 border-b border-[#89CFF3] bg-[#A0E9FF]">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-[#00A9FF] rounded-full flex items-center justify-center border-2 border-black transition-all duration-300 hover:border-gray-800">
-                                    <User size={18} className="text-black transition-colors duration-300 hover:text-gray-800" />
-                                </div>
-                                <div>
-                                    <p className="font-semibold text-black text-sm">{getUserDisplayName()}</p>
-                                    <p className="text-xs text-black opacity-80">{user.email}</p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
 
-                    {/* Menu Items */}
-                    <div className="p-3">
-                        <div className="space-y-1">
-                            {/* Authentication Links */}
-                            {filteredMenuItems.map((item) => {
-                                const IconComponent = item.icon;
-                                return (
-                                    <button
-                                        key={item.path}
-                                        onClick={() => handleNavigation(item.path)}
-                                        className="flex items-center gap-3 w-full p-3 rounded-lg transition-all duration-300 text-black hover:text-gray-800 focus:outline-none focus:bg-[#A0E9FF] focus:text-black relative group"
-                                        tabIndex={0}
-                                    >
-                                        <div className="absolute inset-0 bg-[#A0E9FF] rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 -z-10" />
-                                        <IconComponent size={18} className="transition-all duration-300 group-hover:scale-110 text-black" />
-                                        <span className="font-medium transition-all duration-300 group-hover:scale-105 text-sm">
-                                            {item.label}
-                                        </span>
-                                    </button>
-                                );
-                            })}
+                        {/* =========================
+                            DESKTOP ACCOUNT
+                        ========================== */}
+                        <div className="hidden md:block relative user-dropdown">
 
-                            {/* Cart Item in Mobile Menu */}
                             <button
-                                onClick={() => handleNavigation('/cart')}
-                                className="flex items-center gap-3 w-full p-3 rounded-lg transition-all duration-300 text-black hover:text-gray-800 focus:outline-none focus:bg-[#A0E9FF] focus:text-black relative group"
-                                tabIndex={0}
+                                className="flex items-center gap-2 py-1.5 pl-1.5 pr-2 rounded-full transition-colors duration-200 hover:bg-gray-50"
+                                onClick={handleUserAction}
                             >
-                                <div className="absolute inset-0 bg-[#A0E9FF] rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 -z-10" />
-                                <ShoppingCart size={18} className="transition-all duration-300 group-hover:scale-110 text-black" />
-                                <span className="font-medium transition-all duration-300 group-hover:scale-105 text-sm">Cart</span>
-                                {cartItemsCount > 0 && (
-                                    <span className="absolute right-3 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold border border-gray-800 transition-all duration-300 group-hover:border-white group-hover:scale-110">
-                                        {cartItemsCount}
+                                <div
+                                    className="w-8 h-8 rounded-full flex items-center justify-center"
+                                    style={{
+                                        backgroundColor:
+                                            colors.background,
+                                        color: colors.primary
+                                    }}
+                                >
+                                    <User size={16} />
+                                </div>
+
+                                <div className="text-left">
+
+                                    <span className="block text-xs text-gray-500 leading-tight">
+                                        Welcome
                                     </span>
-                                )}
+
+                                    <span
+                                        className="flex items-center gap-1 text-sm font-semibold leading-tight"
+                                        style={{
+                                            color: colors.text
+                                        }}
+                                    >
+                                        {isAuthenticated
+                                            ? getUserDisplayName()
+                                            : 'Login / Register'}
+
+                                        <ChevronDown size={14} />
+                                    </span>
+
+                                </div>
                             </button>
 
-                            {/* Logout for logged-in users */}
-                            {isAuthenticated && (
-                                <button
-                                    onClick={handleLogout}
-                                    className="flex items-center gap-3 w-full p-3 rounded-lg transition-all duration-300 text-black hover:text-red-800 hover:bg-red-400 mt-3 focus:outline-none focus:bg-red-400 focus:text-red-800 relative group"
-                                    tabIndex={0}
-                                >
-                                    <div className="absolute inset-0 bg-red-400 rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 -z-10" />
-                                    <LogOut size={18} className="transition-all duration-300 group-hover:scale-110 text-black" />
-                                    <span className="font-medium transition-all duration-300 group-hover:scale-105 text-sm">Logout</span>
-                                </button>
-                            )}
+
+                            {/* Desktop User Dropdown */}
+                            {isAuthenticated && isDropdownOpen && (
+    <div className="absolute top-full right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden">
+
+        {/* User Information */}
+        <div className="p-4 border-b border-gray-100">
+            <p
+                className="text-sm font-semibold"
+                style={{ color: colors.text }}
+            >
+                {getUserDisplayName()}
+            </p>
+
+            <p className="text-xs text-gray-500 truncate mt-1">
+                {user?.email}
+            </p>
+        </div>
+
+        {/* Orders - Logged in users only */}
+        <button
+            className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+            onClick={() => handleNavigation('/orders')}
+        >
+            <Package
+                size={17}
+                style={{ color: colors.primary }}
+            />
+
+            <span>Orders</span>
+        </button>
+
+        {/* Logout */}
+        <button
+            className="flex items-center gap-3 w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors border-t border-gray-100"
+            onClick={handleLogout}
+        >
+            <LogOut size={17} />
+            <span>Logout</span>
+        </button>
+
+    </div>
+)}
                         </div>
+
+
+                        {/* =========================
+                            MOBILE USER ICON
+                        ========================== */}
+                        <button
+                            className="md:hidden w-9 h-9 flex items-center justify-center rounded-full"
+                            style={{
+                                backgroundColor:
+                                    colors.background,
+                                color: colors.primary
+                            }}
+                            onClick={handleUserAction}
+                        >
+                            <User size={16} />
+                        </button>
+
+
+                        {/* =========================
+                            MOBILE HAMBURGER
+                        ========================== */}
+                        <button
+                            className="md:hidden mobile-menu-button w-9 h-9 flex items-center justify-center rounded-full"
+                            style={{
+                                backgroundColor:
+                                    colors.background,
+                                color: colors.text
+                            }}
+                            onClick={toggleMenu}
+                        >
+                            <Menu size={20} />
+                        </button>
+
                     </div>
                 </div>
-            </div>
-        </nav>
+
+
+                {/* =========================
+                    MOBILE MENU
+                ========================== */}
+                <div
+                    className={`mobile-menu fixed inset-0 z-50 transform transition-transform duration-300 ease-in-out ${isMenuOpen
+                            ? 'translate-x-0'
+                            : 'translate-x-full'
+                        }`}
+                >
+
+                    {/* Backdrop */}
+                    <div
+                        className="absolute inset-0 bg-black bg-opacity-40 transition-opacity duration-300"
+                        onClick={() => setIsMenuOpen(false)}
+                    />
+
+
+                    {/* Menu Content */}
+                    <div className="absolute right-0 top-0 h-full w-72 bg-white shadow-2xl overflow-y-auto">
+
+                        {/* =========================
+                            MENU HEADER
+                        ========================== */}
+                        <div className="flex items-center justify-between p-4 border-b border-gray-100">
+
+                            <h2
+                                className="text-lg font-bold"
+                                style={{
+                                    color: colors.text
+                                }}
+                            >
+                                Menu
+                            </h2>
+
+                            <button
+                                onClick={() =>
+                                    setIsMenuOpen(false)
+                                }
+                                className="p-2 rounded-lg transition-all duration-300 hover:bg-gray-100"
+                            >
+                                <X
+                                    size={20}
+                                    style={{
+                                        color: colors.text
+                                    }}
+                                />
+                            </button>
+
+                        </div>
+
+
+                        {/* =========================
+                            USER INFORMATION
+                        ========================== */}
+                        {isAuthenticated && user && (
+                            <div
+                                className="p-4 border-b border-gray-100"
+                                style={{
+                                    backgroundColor:
+                                        colors.background
+                                }}
+                            >
+                                <div className="flex items-center gap-3">
+
+                                    <div
+                                        className="w-10 h-10 bg-white rounded-full flex items-center justify-center"
+                                        style={{
+                                            color: colors.primary
+                                        }}
+                                    >
+                                        <User size={18} />
+                                    </div>
+
+                                    <div>
+
+                                        <p
+                                            className="font-semibold text-sm"
+                                            style={{
+                                                color: colors.text
+                                            }}
+                                        >
+                                            {getUserDisplayName()}
+                                        </p>
+
+                                        <p className="text-xs text-gray-600">
+                                            {user.email}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        )}
+
+
+                        {/* =========================
+                            MOBILE MENU ITEMS
+                        ========================== */}
+                        <div className="p-3">
+
+                            <div className="space-y-1">
+
+                                {/* =================================
+                                    MAIN NAVIGATION
+                                    These are shown ONLY ONCE
+                                ================================== */}
+                                {navLinks.map((link) => {
+
+                                    const Icon = link.icon;
+
+                                    return (
+                                        <button
+                                            key={link.path}
+                                            onClick={() =>
+                                                handleNavigation(
+                                                    link.path
+                                                )
+                                            }
+                                            className="flex items-center gap-3 w-full p-3 rounded-lg transition-all duration-300 text-sm font-medium hover:bg-gray-50"
+                                            style={{
+                                                color: colors.text
+                                            }}
+                                        >
+                                            <Icon
+                                                size={18}
+                                                style={{
+                                                    color:
+                                                        colors.primary
+                                                }}
+                                            />
+
+                                            <span>
+                                                {link.label}
+                                            </span>
+                                        </button>
+                                    );
+                                })}
+
+
+                                {/* Divider */}
+                                <div className="my-2 border-t border-gray-100" />
+
+
+                                {/* =================================
+                                    LOGGED-IN MENU
+                                ================================== */}
+                                {isAuthenticated ? (
+                                    <>
+
+                                        {/* ORDERS */}
+                                        <button
+                                            onClick={() =>
+                                                handleNavigation(
+                                                    '/orders'
+                                                )
+                                            }
+                                            className="flex items-center gap-3 w-full p-3 rounded-lg transition-all duration-300 text-sm font-medium hover:bg-gray-50"
+                                            style={{
+                                                color: colors.text
+                                            }}
+                                        >
+                                            <Package
+                                                size={18}
+                                                style={{
+                                                    color:
+                                                        colors.primary
+                                                }}
+                                            />
+
+                                            <span>
+                                                Orders
+                                            </span>
+                                        </button>
+
+
+                                        {/* CART */}
+                                        <button
+                                            onClick={() =>
+                                                handleNavigation(
+                                                    '/cart'
+                                                )
+                                            }
+                                            className="flex items-center gap-3 w-full p-3 rounded-lg transition-all duration-300 text-sm font-medium hover:bg-gray-50 relative"
+                                            style={{
+                                                color: colors.text
+                                            }}
+                                        >
+                                            <ShoppingCart
+                                                size={18}
+                                                style={{
+                                                    color:
+                                                        colors.primary
+                                                }}
+                                            />
+
+                                            <span>
+                                                Cart
+                                            </span>
+
+                                            {cartItemsCount > 0 && (
+                                                <span
+                                                    className="absolute right-3 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold"
+                                                    style={{
+                                                        backgroundColor:
+                                                            colors.primary
+                                                    }}
+                                                >
+                                                    {cartItemsCount}
+                                                </span>
+                                            )}
+                                        </button>
+
+
+                                        {/* LOGOUT */}
+                                        <button
+                                            onClick={handleLogout}
+                                            className="flex items-center gap-3 w-full p-3 rounded-lg transition-all duration-300 text-sm font-medium text-red-600 hover:bg-red-50 mt-2"
+                                        >
+                                            <LogOut size={18} />
+
+                                            <span>
+                                                Logout
+                                            </span>
+                                        </button>
+
+                                    </>
+                                ) : (
+
+                                    /* =================================
+                                        LOGGED-OUT MENU
+                                    ================================== */
+                                    <>
+                                        {/* LOGIN */}
+                                        <button
+                                            onClick={() =>
+                                                handleNavigation(
+                                                    '/login'
+                                                )
+                                            }
+                                            className="flex items-center gap-3 w-full p-3 rounded-lg transition-all duration-300 text-sm font-medium hover:bg-gray-50"
+                                            style={{
+                                                color: colors.text
+                                            }}
+                                        >
+                                            <LogIn
+                                                size={18}
+                                                style={{
+                                                    color:
+                                                        colors.primary
+                                                }}
+                                            />
+
+                                            <span>
+                                                Login
+                                            </span>
+                                        </button>
+
+
+                                        {/* SIGN UP */}
+                                        <button
+                                            onClick={() =>
+                                                handleNavigation(
+                                                    '/register'
+                                                )
+                                            }
+                                            className="flex items-center gap-3 w-full p-3 rounded-lg transition-all duration-300 text-sm font-medium hover:bg-gray-50"
+                                            style={{
+                                                color: colors.text
+                                            }}
+                                        >
+                                            <UserPlus
+                                                size={18}
+                                                style={{
+                                                    color:
+                                                        colors.primary
+                                                }}
+                                            />
+
+                                            <span>
+                                                Sign Up
+                                            </span>
+                                        </button>
+
+
+                                        {/* CART */}
+                                        <button
+                                            onClick={() =>
+                                                handleNavigation(
+                                                    '/cart'
+                                                )
+                                            }
+                                            className="flex items-center gap-3 w-full p-3 rounded-lg transition-all duration-300 text-sm font-medium hover:bg-gray-50 relative"
+                                            style={{
+                                                color: colors.text
+                                            }}
+                                        >
+                                            <ShoppingCart
+                                                size={18}
+                                                style={{
+                                                    color:
+                                                        colors.primary
+                                                }}
+                                            />
+
+                                            <span>
+                                                Cart
+                                            </span>
+
+                                            {cartItemsCount > 0 && (
+                                                <span
+                                                    className="absolute right-3 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold"
+                                                    style={{
+                                                        backgroundColor:
+                                                            colors.primary
+                                                    }}
+                                                >
+                                                    {cartItemsCount}
+                                                </span>
+                                            )}
+                                        </button>
+
+                                    </>
+                                )}
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </nav>
+        </>
     );
 };
 
