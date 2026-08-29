@@ -156,12 +156,13 @@ const NavBar = () => {
                     {/* =========================
                         LOGO
                     ========================== */}
+                    {/* Logo */}
                     <div
                         className="flex items-center gap-2 cursor-pointer flex-shrink-0"
                         onClick={() => handleNavigation('/home')}
                     >
                         <img
-                            src="public/everlastLogo-removebg-preview.png"
+                            src="/everlastLogo-removebg-preview.png"
                             alt="Everlast Water Solutions"
                             className="h-11 w-11 sm:h-12 sm:w-12 lg:h-14 lg:w-14 object-contain flex-shrink-0"
                         />
@@ -306,46 +307,46 @@ const NavBar = () => {
 
                             {/* Desktop User Dropdown */}
                             {isAuthenticated && isDropdownOpen && (
-    <div className="absolute top-full right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden">
+                                <div className="absolute top-full right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden">
 
-        {/* User Information */}
-        <div className="p-4 border-b border-gray-100">
-            <p
-                className="text-sm font-semibold"
-                style={{ color: colors.text }}
-            >
-                {getUserDisplayName()}
-            </p>
+                                    {/* User Information */}
+                                    <div className="p-4 border-b border-gray-100">
+                                        <p
+                                            className="text-sm font-semibold"
+                                            style={{ color: colors.text }}
+                                        >
+                                            {getUserDisplayName()}
+                                        </p>
 
-            <p className="text-xs text-gray-500 truncate mt-1">
-                {user?.email}
-            </p>
-        </div>
+                                        <p className="text-xs text-gray-500 truncate mt-1">
+                                            {user?.email}
+                                        </p>
+                                    </div>
 
-        {/* Orders - Logged in users only */}
-        <button
-            className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-            onClick={() => handleNavigation('/orders')}
-        >
-            <Package
-                size={17}
-                style={{ color: colors.primary }}
-            />
+                                    {/* Orders - Logged in users only */}
+                                    <button
+                                        className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                                        onClick={() => handleNavigation('/orders')}
+                                    >
+                                        <Package
+                                            size={17}
+                                            style={{ color: colors.primary }}
+                                        />
 
-            <span>Orders</span>
-        </button>
+                                        <span>Orders</span>
+                                    </button>
 
-        {/* Logout */}
-        <button
-            className="flex items-center gap-3 w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors border-t border-gray-100"
-            onClick={handleLogout}
-        >
-            <LogOut size={17} />
-            <span>Logout</span>
-        </button>
+                                    {/* Logout */}
+                                    <button
+                                        className="flex items-center gap-3 w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors border-t border-gray-100"
+                                        onClick={handleLogout}
+                                    >
+                                        <LogOut size={17} />
+                                        <span>Logout</span>
+                                    </button>
 
-    </div>
-)}
+                                </div>
+                            )}
                         </div>
 
 
@@ -389,8 +390,8 @@ const NavBar = () => {
                 ========================== */}
                 <div
                     className={`mobile-menu fixed inset-0 z-50 transform transition-transform duration-300 ease-in-out ${isMenuOpen
-                            ? 'translate-x-0'
-                            : 'translate-x-full'
+                        ? 'translate-x-0'
+                        : 'translate-x-full'
                         }`}
                 >
 
