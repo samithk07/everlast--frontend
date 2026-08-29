@@ -256,23 +256,30 @@ Please contact the customer to schedule the water test.`;
                     </div>
                 )}
 
-              
 
-                {/* 🌊 1. Hero Section */}
+
+                
+                {/* 1. Hero Section */}
                 <section className="relative overflow-hidden bg-white">
+
                     {/* Background photo */}
                     <div
-                        className="absolute inset-0 bg-cover bg-center"
-                        style={{ backgroundImage: "url('public/image/hero.png')" }}
+                        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                        style={{
+                            backgroundImage: "url('/image/hero.png')"
+                        }}
                     ></div>
-                    {/* Legibility scrim so text reads over the photo, fading out toward the image on the right */}
+
+                    {/* Legibility overlay */}
                     <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 lg:via-white/0 to-white/20"></div>
 
                     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28">
+
                         <div className="grid lg:grid-cols-2 gap-12 items-center">
 
                             {/* Left content */}
                             <div>
+
                                 <p
                                     className="text-xs sm:text-sm font-bold tracking-widest uppercase mb-4"
                                     style={{ color: colors.primary }}
@@ -306,6 +313,7 @@ Please contact the customer to schedule the water test.`;
                                 </div>
 
                                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
+
                                     <a
                                         href="#products"
                                         className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-semibold text-white transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
@@ -314,28 +322,51 @@ Please contact the customer to schedule the water test.`;
                                         <Droplet size={18} />
                                         Shop Water Purifiers
                                     </a>
+
                                     <a
                                         href="#water-test"
                                         className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-semibold bg-white border-2 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
-                                        style={{ borderColor: colors.primary, color: colors.primary }}
+                                        style={{
+                                            borderColor: colors.primary,
+                                            color: colors.primary
+                                        }}
                                     >
                                         <SlidersHorizontal size={18} />
                                         Find Your Purifier
                                     </a>
+
                                 </div>
 
                                 <div className="flex flex-wrap gap-x-6 gap-y-2">
-                                    {["Free Installation", "Genuine Filters", "Warranty Included"].map((item) => (
-                                        <span key={item} className="flex items-center gap-2 text-sm text-gray-700">
-                                            <Check size={16} style={{ color: colors.primary }} />
+
+                                    {[
+                                        "Free Installation",
+                                        "Genuine Filters",
+                                        "Warranty Included"
+                                    ].map((item) => (
+
+                                        <span
+                                            key={item}
+                                            className="flex items-center gap-2 text-sm text-gray-700"
+                                        >
+                                            <Check
+                                                size={16}
+                                                style={{
+                                                    color: colors.primary
+                                                }}
+                                            />
+
                                             {item}
                                         </span>
+
                                     ))}
+
                                 </div>
+
                             </div>
 
-                           
                         </div>
+
                     </div>
                 </section>
 
